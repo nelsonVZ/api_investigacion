@@ -2,11 +2,15 @@ const express = require('express'); //de esta forma se importa modulos en node.j
 require('dotenv').config();
 const { dbConection } = require('./config/database');
 const cors = require('cors');
+
 //Creando el servidor express
 const app = express();
 
 //Estableciendo la configuracion de cors
 app.use(cors());
+app.use(express.json());
+//Lectura y parseo del body
+
 
 //Verificando variables de entorno
 //console.log(process.env);
@@ -14,12 +18,10 @@ app.use(cors());
 dbConection();
 
 //Rutas de la API
-app.get('/', (req, res) => {
-    res.status(400).json({
-        ok: true,
-        msg: 'Bienvenidos a node'
-    });
-});
+app.use('/api/usuarios', require('./routes/usuarios.routes'));
+app.use('/api/login', require('./routes/auth.route'));
+//app.use('/api/investigadores', require('./routes/investigadores.routes'));
+
 
 //Para levantar el servidor
 app.listen(process.env.PORT, () => {
